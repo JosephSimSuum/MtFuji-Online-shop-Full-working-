@@ -1,0 +1,246 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    string sale = "Sale";
+    string discount = "Discount";
+    string news = "New";
+    string hot = "Hot";
+}
+
+@using MtFuji.Models
+@model List<Product>
+
+
+<section class="hero-section">
+    <div class="hero-slider owl-carousel">
+        <div class="hs-item set-bg" data-setbg="../Images/bg.png">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-7 text-white">
+                        <span>New Arrivals</span>
+                        <h2>Kitchenware</h2>
+                        <p>There are umpteen products that you could potentially fill your kitchen items list for a new home. Depending on your cooking abilities and tastes you may be vying for a treasure trove of kitchen tools and equipment for cooking. </p>
+                        <a href="#" class="site-btn sb-white">Discover</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hs-item set-bg" data-setbg="../Images/bg-2.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-7 text-white">
+                        <span style="color:black">Best Deals</span>
+                        <h2 style="color:black">Top Product</h2>
+                        <p style="color:black;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                        <a href="#" class="site-btn sb-white">Discover</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="slide-num-holder" id="snh-1"></div>
+    </div>
+</section>
+<center>
+    <section class="related-product-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>HOT RIGHT NOW</h2>
+            </div>
+            <div class="product-slider owl-carousel">
+                @{if (ViewBag.offers != null)
+                    {
+                        foreach (var item in ViewBag.offers)
+                        {
+
+                            <div class="product-item" style="width:100%;">
+                                <div class="pi-pic">
+                                    @if (item.offer_title == null)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <div class="tag-sale">@item.offer_title</div>
+                                    }
+                                    <img src='@Url.Content(@item.img1)' />
+                                    <div class="pi-links">
+                                        <a href="@Url.Action(actionName:"OrderNow",controllerName: "ShippingCart",routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                        <a href="@Url.Action(actionName: "ProductDetail", controllerName: "Product", routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-info"></i><span>Go To Detail</span></a>
+                                    </div>
+                                </div>
+                                <div class="pi-text">
+                                    <div class="product-name">
+                                        <p><h5>@String.Format("{0:N0}", item.new_price) ks<span style="padding-left:20px; font-size:14px;color:red;"><del>@String.Format("{0:N0}", item.old_price) ks</del> </span></h5></p>
+                                        <p> @item.product_name</p>
+                                        <p id="model-no"> Model No: <span>@item.model_No</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                    else
+                    {
+                        @*<h2>There is no product Available here.</h2>*@
+                    }
+                }
+            </div>
+        </div>
+    </section>
+</center>
+@*end of offer*@
+<center>
+    <section class="product-filter-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>BROWSE TOP SELLING PRODUCTS</h2>
+            </div>
+            <ul class="product-filter-menu">
+                <li><a onclick="sale()"> ON SALE</a>  </li>
+                <li> <a onclick="hot()">HOT ITEMS</a></li>
+                <li><a onclick="news()">NEW ARRIVAL</a></li>
+                <li><a onclick="discount()">DISCOUNT</a></li>
+            </ul>
+            <div class="row" id="display">
+                @{if (ViewBag.products != null)
+                        {
+                            foreach (var item in ViewBag.products)
+                            {
+                                <div class="col-md-3" style="padding-bottom:20px;">
+                                    <div class="product-item" style="width:100%;">
+                                        <div class="pi-pic">
+                                            @if (item.offer_title == null)
+                                            {
+
+                                            }
+                                            else
+                                            {
+                                                <div class="tag-sale">@item.offer_title</div>
+                                            }
+                                            <img src='@Url.Content(@item.img1)' />
+                                            <div class="pi-links">
+                                                <a href="@Url.Action(actionName:"OrderNow",controllerName: "ShippingCart",routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                                <a href="@Url.Action(actionName: "ProductDetail", controllerName: "Product", routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-info"></i><span>Go To Detail</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="pi-text">
+                                            <div class="product-name">
+                                                <p><h5>@String.Format("{0:N0}", item.new_price) ks<span style="padding-left:20px; font-size:14px;color:red;"><del>@String.Format("{0:N0}", item.old_price) ks</del> </span></h5></p>
+                                                <p> @item.product_name</p>
+                                                <p id="model-no"> Model No: <span>@item.model_No</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                        else
+                        {
+
+                        }
+                    }
+            </div>
+        </div>
+
+    </section>
+</center>
+
+<center>
+    @if ((List<Carts>)Session["recent"] != null)
+    {
+        <section class="related-product-section">
+            <div class="container">
+
+                <div class="section-title">
+                    <h2>RECENT VIEW PRODUCTS</h2>
+                </div>
+                <div class="product-slider owl-carousel">
+
+                    @foreach (var item in (List<Carts>)Session["recent"])
+                    {
+
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                <img src='@Url.Content(@item.product.img1)' />
+                                <div class="pi-links">
+                                    <a href="@Url.Action(actionName:"OrderNow",controllerName: "ShippingCart",routeValues: new { id = item.product.product_Id })" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                    <a href="@Url.Action(actionName: "ProductDetail", controllerName: "Product", routeValues: new { id = item.product.product_Id })" class="add-card"><i class="flaticon-info"></i><span>Go To Detail</span></a>
+                                </div>
+                            </div>
+                            <div class="pi-text">
+                                <div class="product-name">
+                                    <p><h5>@String.Format("{0:N0}", item.product.new_price) ks<span style="padding-left:20px; font-size:14px;color:red;"><del>@String.Format("{0:N0}", item.product.old_price) ks</del> </span></h5></p>
+                                    <p> @item.product.product_name</p>
+                                    <p id="model-no"> Model No: <span>@item.product.model_No</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+
+                </div>
+            </div>
+        </section>
+    }
+    else
+    {
+
+    }
+</center>
+
+
+<div class="container">
+    <div class="row" id="display">
+
+    </div>
+</div>
+<script>
+        var sale = function () {
+            $.ajax({
+                type: "post",
+                url: "/Home/Filters",
+                data: { 'items': '@sale' },
+            success: function (result) {
+
+                $("#display").html(result);
+            }
+        });
+    }
+         var hot = function () {
+            $.ajax({
+                type: "post",
+                url: "/Home/Filters",
+                data: {'items': '@hot' },
+            success: function (result) {
+
+                $("#display").html(result);
+            }
+        });
+    }
+             var news = function () {
+            $.ajax({
+                type: "post",
+                url: "/Home/Filters",
+                data: {'items': '@news' },
+            success: function (result) {
+
+                $("#display").html(result);
+            }
+        });
+    }
+             var discount = function () {
+            $.ajax({
+                type: "post",
+                url: "/Home/Filters",
+                data: {'items': '@discount' },
+            success: function (result) {
+
+                $("#display").html(result);
+            }
+        });
+    }
+</script>
+

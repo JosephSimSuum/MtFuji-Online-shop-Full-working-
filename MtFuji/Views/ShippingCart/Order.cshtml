@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MtFuji.Models
+@model List<Product>
+<section class="product-section">
+    @if (Session["Cart"] != null)
+    {
+        using (Html.BeginForm("proceedOrder", "ShippingCart", FormMethod.Post, new { id = "customer-form" }))
+        {
+
+            <section class="checkout-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-7 order-2 order-lg-1">
+                            <div class="checkout-form">
+                                <div class="cf-title">Your Information</div>
+                                <div class="row address-inputs">
+                                    <div class="col-md-12">
+                                        <input type="text" name="cusName" placeholder="Name" value="@( Session["name"]!=null?Session["name"]:null)">
+                                        <input type="text" name="cusAddress" placeholder="Address" value="@( Session["address"]!=null?Session["address"]:null)">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" name="cusPhone1" placeholder="Phone no 1." value="@( Session["phone1"]!=null?Session["phone1"]:null)">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" name="cusPhone2" placeholder="Phone no 2 (Optional)">
+                                    </div>
+                                </div>
+                                <div class="cf-title">Delievery Info</div>
+                                <div class="row shipping-btns">
+                                    <div class="col-6">
+                                        <h4> Weekend Deliver</h4>
+                                    </div>
+                                    @*<div class="col-6">
+                                            <h5>Weekend Delivery</h5>
+                                        </div>*@
+                                </div>
+                                <div class="cf-title">Payment</div>
+                                <ul class="payment-list">
+                                    <li>Cash on Delivery</li>
+                                </ul>
+                                <input class="site-btn submit-order-btn" type="submit" value="Place Order" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 order-1 order-lg-2">
+                            <div class="checkout-cart">
+                                <h3>Your Cart</h3>
+                                <div class="cart-table-warp">
+                                    <ul class="product-list">
+                                        @foreach (var cart in (List<Carts>)Session["Cart"])
+                                        {
+                                            <li>
+                                                <div class="pl-thumb"><img src='@Url.Content(cart.product.img1)' alt=""></div>
+                                                <h5>@cart.product.product_name</h5>
+                                                @{
+                                            var price = String.Format("{0:N0}", cart.product.new_price);
+                                            var quantity = cart.p;
+
+                                                }
+
+                                                <p>Price x Qty <span style="float:right; "> @price x @quantity</span></p>
+
+                                                @*<p>quantity<span style="float: right;">@quantity</span></p>*@
+                                                <p>Subtotal <span style="float: right; "> @String.Format("{0:N0}", cart.product.new_price * cart.p)</span></p>
+
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+                                @{
+                                        List<Carts> temps = (List<Carts>)Session["Cart"];
+                                        var totals = String.Format("{0:N0}", temps.Sum(x => x.p * x.product.new_price));
+                                        int final_total;
+                                        int t = Convert.ToInt32(temps.Sum(x => x.p * x.product.new_price));
+                                        int delivery = 5000;
+                                        string delive;
+                                        if (t > 50000)
+                                        {
+                                            final_total = t + 0;
+                                            delive = "Free";
+                                        }
+                                        else
+                                        {
+                                            final_total = t + delivery;
+                                            delive = delivery.ToString();
+                                        }
+
+                                }
+                                <ul class="price-list">
+                                    <li>Total<span style="text-align:right;">@totals</span></li>
+                                    <li>Shipping<span style="text-align:right;">@delive</span></li>
+                                    <li class="total">Total<span style="text-align:right;">@final_total ks</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+
+    }
+    else
+    {
+        <h3>No Item in Your Order</h3>
+    }
+</section>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#customer-form").validate({
+            rules: {
+                cusName: {
+                    required: true
+                },
+                cusAddress: {
+                    required: true
+                },
+                cusPhone1: {
+                    required: true
+                }
+            }
+        })
+    })
+
+</script>
+
+@*//$(document).ready(function () {
+    //    $("#customer-form").validate({
+
+    //        rules: {
+    //            cusName: {
+    //                required: true
+    //            },
+    //            cusAddress: {
+    //                required: true
+    //            },
+    //            cusPhone1: {
+    //                required: true
+    //            }
+    //        }
+    //    });
+
+    //});*@

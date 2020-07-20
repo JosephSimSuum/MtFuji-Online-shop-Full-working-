@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "Product - " + @ViewBag.category;
+}
+@using MtFuji.Models
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<Product>
+
+<div class="panel panel-default" style="width:100%;">
+    <img src="~/Images/kitchenware.jpg" class="img-responsive" />
+</div>
+<section class="category-section">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-3 order-2 order-lg-1">
+                <div class="filter-widget">
+                    <div class="panel panel-default">                  
+                        <div class="panel-body">
+                            <img src="~/Images/mt_fuji.jpg" class="img-thumbnail" />
+                            <p>  Hello Welcome to the Mt Fuji, One of the best shop in myanmar that sell Japanese goods (Brand new/ Used) which are unique and hard to find in local market. Range of products are: Cutleries,Bags,Kid toys,tableware and decoration</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-widget">
+                    <h2 class="fw-title">Shop By Price</h2>
+                    price range
+                    <div class="aa-sidebar-price-range">
+                        @using (Html.BeginForm("FilterByPrice", "Product", FormMethod.Post))
+                        {
+
+                            <input type="text" class="form-control" name="categoryName" value="@ViewBag.category" hidden />
+                            <input style="width:100%;" class="multi-range" type="range" min="0" max="100" onchange="updateMinInput(this.value);">
+                            <input style="width:100%;" class="multi-range" type="range" min="0" max="100" onchange="updateMaxInput(this.value);">
+
+                            <div class="form-group">
+                                <input type="number" class="form-control " name="minPrice" id="minValue" min="0" maxlength="6" max="999999" value="00">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="number" class="form-control" name="maxPrice" id="maxValue" min="0" maxlength="6" max="999999" value="00">
+                            </div>
+                            <br />
+                            <button class="btn btn-success btn-block" type="submit">Filter</button>
+
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
+                <center>
+                    <div class="row">
+
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="product-item">
+                                        <div class="pi-pic">
+                                            @if (item.offer_title == null)
+                                            {
+
+                                            }
+                                            else
+                                            {
+                                                <div class="tag-sale">@item.offer_title</div>
+                                            }
+                                            <img src='@Url.Content(@item.img1)' />
+                                            <div class="pi-links">
+                                                <a href="@Url.Action(actionName: "OrderNow", controllerName: "ShippingCart", routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                                <a href="@Url.Action(actionName: "ProductDetail", controllerName: "Product", routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-info"></i><span>Go To Detail</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="pi-text">
+                                            <div class="product-name">
+                                                <p><h5>@String.Format("{0:N0}", item.new_price) ks<span style="padding-left:20px; font-size:14px;color:red;"><del>@String.Format("{0:N0}", item.old_price) ks</del> </span></h5></p>
+                                                <p> @item.product_name</p>
+                                                <p id="model-no"> Model No: <span>@item.model_No</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <h2>There is no product Available here.</h2>
+                        }
+
+
+                    </div>
+
+                    <div class="pager text-right">
+                        @if (Request.QueryString["categoryName"] == null)
+                        {
+                            @Html.PagedListPager(Model, page => Url.Action("Product", new { page })
+                                , new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
+                        }
+                        else
+                        {
+                            @Html.PagedListPager(Model, page => Url.Action("GetProductsByCategory", new { categoryName = Request.QueryString["categoryName"], page })
+                            , new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
+                        }
+
+                    </div>
+                </center>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<script>
+    function updateMinInput(val) {
+        document.getElementById('minValue').value = 00;
+        document.getElementById('minValue').value = val * 1000;
+    }
+    function updateMaxInput(val) {
+        document.getElementById('maxValue').value = 00;
+        document.getElementById('maxValue').value = val * 1000;
+    }
+
+    var filter = function () {
+        var min = document.getElementById('minValue').value();
+        var max = document.getElementById('maxValue').value();
+
+        $.ajax({
+            type: "post",
+            data: { 'cat': '@ViewBag.category', 'min': min, 'max': max ,'page':0},
+            url: "/Product/Filterp",
+            success: function (result) {
+
+            }
+        })
+    }
+
+</script>

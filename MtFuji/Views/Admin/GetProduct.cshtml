@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "GetProduct";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int number = 1;
+}
+@model MtFuji.Models.ProductVM
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active">Products List</li>
+</ol>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        Product Table
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Is New</th>
+                        <th>N-Price</th>
+                        <th>O-Price</th>
+                        <th>Pic 1</th>
+                        <th>Pic 2</th>
+                        <th>Pic 3</th>
+                        <th>Pic 4</th>
+                        <th>Qty</th>
+                        <th>Title</th>
+                        <th>Model</th>
+                        <th>Cat ID</th>
+                        <th>Sub ID</th>
+                        <th>Deleted</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in ViewBag.ProductList)
+                    {
+                        <tr>
+                            <td>@number</td>
+                            <td>@p.product_name</td>
+                            <td>@p.is_new</td>
+                            <td>@String.Format("{0:N0}", p.new_price)</td>
+                            <td>@String.Format("{0:N0}", p.old_price)</td>
+                            <td><img src='@Url.Content(p.img1)' alt="" class="img-thumbnail"></td>
+                            <td><img src='@Url.Content(p.img2)' alt="" class="img-thumbnail"></td>
+                            <td><img src='@Url.Content(p.img3)' alt="" class="img-thumbnail"></td>
+                            <td><img src='@Url.Content(p.img4)' alt="" class="img-thumbnail"></td>
+                            <td>@p.quantity</td>
+                            <td>@p.offer_title</td>
+                            <td>@p.model_No</td>
+                            <td>@p.CategoryID</td>
+                            <td>@p.SubCategoryID</td>
+                            <td>@p.isDeleted</td>
+                            <td>
+                                <a href="#addProductModal" class="add" data-toggle="modal"><i class="fas fa-fw fa-plus" data-toggle="tooltip" title="Add"></i></a>
+                                <a href="@Url.Action(controllerName: "Admin", actionName: "EditProduct", routeValues: new { id=@p.product_Id})" class="edit"><i class="fas fa-fw fa-edit" data-toggle="tooltip" title="Edit"></i></a>
+                                <a href="@Url.Action(controllerName: "Admin", actionName: "DeleteProduct", routeValues: new { id = @p.product_Id })" class="delete"><i class="fas fa-fw fa-trash" data-toggle="tooltip" title="Delete"></i></a>
+                            </td>
+                        </tr>
+                        number += 1;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="ProductDiv">
+                <!--add product form-->
+                @using (Html.BeginForm("SaveP", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group">@Html.TextBoxFor(model => model.product_name, new { @class = "form-control", @placeholder = "Product Name" })</div>
+                    <div class="form-group">@Html.TextBoxFor(model => model.model_No, new { @class = "form-control", @placeholder = "Model No" })</div>
+                    <div class="form-group">@Html.TextAreaFor(model => model.product_description, new { @class = "form-control", @placeholder = "Description" })<br /></div>
+                    <div class="form-group">@Html.TextBoxFor(model => model.is_new, new { @class = "form-control", @placeholder = "New/Used" })</div>
+                    <div class="form-group">@Html.TextBoxFor(model => model.new_price, new { @class = "form-control", @placeholder = "new price" })</div>
+                    <div class="form-group">@Html.TextBoxFor(model => model.old_price, new { @class = "form-control", @placeholder = "old price" })</div>
+                    <div class="form-group"><input type="file" name="file" multiple /></div>
+                    <div class="form-group"> @Html.TextBoxFor(model => model.quantity, new { @class = "form-control", @placeholder = "quantity" })</div>
+                    <div class="form-group"> @Html.TextBoxFor(model => model.offer_title, new { @class = "form-control", @placeholder = "Offer title(On Sale/Hot /New)" })</div>
+                    <div class="form-group">@Html.DropDownListFor(model => model.CategoryID, ViewBag.category as SelectList, "------select-------", new { @class = "form-control" })</div>
+                    <div class="form-group">@Html.DropDownListFor(model => model.SubCategoryID, new SelectList(""), "------select-------", new { @class = "form-control" })</div>
+
+                    <input type="submit" value="Save" class="btn btn-primary" />
+
+                }
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                @*<a class="btn btn-primary" href="login.html">Logout</a>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+
+        var editProduct = function (product_Id) {
+            var url = "/?id=" + product_Id;
+            $("#editEmployeeModal").load(url, function () {
+                $("#editEmployeeModal").modal("show");
+            });
+        }
+        $("#CategoryID").change(function () {
+            $.get("/Admin/GetSubCategory", { categoryId: $("#CategoryID").val() }, function (data) {
+                $("#SubCategoryID").empty();
+                $.each(data, function (index, row) {
+                    $("#SubCategoryID").append("<option value='" + row.SubCategoryID + "'>" + row.Name + "</option>")
+                })
+            })
+        })
+    })
+</script>

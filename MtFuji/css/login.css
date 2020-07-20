@@ -1,0 +1,62 @@
+﻿
+.firstpart {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+
+.secondpart {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+/*.row{
+    padding:2%;
+}*/
+.right-side {
+    text-align: center;
+    margin:0 auto;
+    margin-top:60px;
+}
+
+    .right-side img {
+        margin-top: 37%;
+       
+    }
+   .contact-form .address-inputs{
+        margin:0 auto;
+    }
+
+.contact .login .btnContact {
+    width: 30%;
+    border: none;
+    border-radius: 50px;
+    padding: 1.5%;
+    font-weight: 600;
+    background: -webkit-linear-gradient(left, #0072ff, #00c6ff);
+    cursor: pointer;
+     
+}
+.login-input .col-centered{
+    margin: 0 auto;
+    
+}
+.contact .login {
+   text-align: center;
+}
+
+.contact .signup {
+    margin-bottom: 9%;
+    padding-left: 2%;
+}
+
+
+/*.btnContactSubmit {
+    width: 30%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    color: #fff;
+    background-color: #0062cc;
+    border: none;
+    cursor: pointer;
+}*/
+/*modal*/

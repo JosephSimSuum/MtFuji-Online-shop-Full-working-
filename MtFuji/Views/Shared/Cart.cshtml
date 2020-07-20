@@ -1,0 +1,26 @@
+﻿@{
+    
+    List<MtFuji.Models.Carts> list_cart = (List<MtFuji.Models.Carts>)Session["Cart"];
+    if (list_cart != null)
+    {
+            var total = String.Format("{0:N0}", list_cart.Sum(x => x.p * x.product.new_price));
+    var qty = list_cart.Sum(x => x.p * 1);
+
+
+    <div class="shopping-card">
+        <i class="flaticon-bag"></i>
+        <span>@qty</span>
+    </div>
+    <a href="@Url.Action("AddtoCart", "ShippingCart")">total: @total</a>
+    }
+    else
+    {
+        <div class="shopping-card">
+        <i class="flaticon-bag"></i>
+        <span>0</span>
+    </div>
+    <a href="@Url.Action("AddtoCart", "ShippingCart")">total: 0</a>
+    }
+
+
+}

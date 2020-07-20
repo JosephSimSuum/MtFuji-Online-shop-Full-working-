@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "AddtoCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MtFuji.Models
+@model List<Product>
+
+@*<h2>AddtoCart</h2>*@
+<section class="product-section">
+    @{
+        if ((List<Carts>)Session["Cart"] != null)
+        {
+            using (Html.BeginForm("updateCart", "ShippingCart", FormMethod.Post))
+            {
+                <section class="cart-section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="cart-table">
+                                    <h3>Your Cart</h3>
+                                    <div class="cart-table-warp">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th class="product-th">Product</th>
+                                                    <th class="quy-th">Quantity</th>
+                                                    @*<th class="size-th">SizeSize</th>*@
+                                                    <th class="total-th">Price</th>
+                                                    <th>Remove</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var cart in (List<Carts>)Session["Cart"])
+                                                {
+                                                    <tr>
+                                                        <td class="product-col">
+                                                            <img src="@Url.Content(cart.product.img1)" alt="">
+                                                            <div class="pc-title">
+                                                                <h4>@cart.product.product_name</h4>
+                                                                <p>@String.Format("{0:N0}", cart.product.new_price)</p>
+                                                            </div>
+                                                        </td>
+                                                        <td class="quy-col">
+                                                            <div class="quantity">
+                                                                <div class="pro-qty">
+                                                                    <input type="text" name="qty" value="@cart.p">
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        @*<td class="size-col"><h4>Size M</h4></td>*@
+                                                        <td class="total-col"><h4>@String.Format("{0:N0}", cart.product.new_price * cart.p)</h4></td>
+                                                        <td style="text-align:center;"><a href="@Url.Action(actionName:"Delete", controllerName:"ShippingCart", routeValues: new { id = cart.product.product_Id })"><i style=" color:red;" class="flaticon-cancel"></i> </a></td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @{
+                                        List<Carts> temp = (List<Carts>)Session["Cart"];
+                                        var total = String.Format("{0:N0}", temp.Sum(x => x.p * x.product.new_price));
+
+                                    }
+                                    <div class="total-cost">
+                                        <h6>Total <span>@total ks</span></h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 card-right">
+                                <input class="site-btn" type="submit" value="Update Cart" />
+                                <a href="@Url.Action("Order", "ShippingCart")" class="site-btn">Proceed to checkout</a>
+                                <a href="@Url.Action("Index", "Home")" class="site-btn sb-dark">Continue shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+        }
+        else
+        {
+            <h2 style="text-align:center;">No Item in your Cart</h2>
+        }
+    }
+</section>

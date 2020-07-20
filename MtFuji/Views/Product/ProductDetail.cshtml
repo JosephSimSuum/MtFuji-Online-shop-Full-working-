@@ -1,0 +1,138 @@
+﻿@model MtFuji.Models.ProductVM
+<section class="product-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product-pic-zoom">
+                    <img class="product-big-img" src="@Url.Content(Model.img1)" alt="">
+
+                </div>
+                <div class="product-thumbs" tabindex="1" style="overflow: hidden; outline: none;">
+                    <div class="product-thumbs-track">
+                        <div class="pt active" data-imgbigurl="@Url.Content(Model.img1)"><img src="@Url.Content(Model.img1)" alt=""></div>
+                        <div class="pt" data-imgbigurl="@Url.Content(Model.img2)"><img src="@Url.Content(Model.img2)" alt=""></div>
+                        <div class="pt" data-imgbigurl="@Url.Content(Model.img3)"><img src="@Url.Content(Model.img3)" alt=""></div>
+                        <div class="pt" data-imgbigurl="@Url.Content(Model.img4)"><img src="@Url.Content(Model.img4)" alt=""></div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="col-lg-6 product-details">
+                <h2 class="p-title">@Model.product_name</h2>
+                <h3 class="p-price">@String.Format("{0:N0}", Model.new_price) ks</h3>
+                <h4 class="p-stock">Available: <span>In Stock</span></h4>
+                @*<div class="p-rating">
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o fa-fade"></i>
+                    </div>
+                    <div class="p-review">
+                        <a href="">3 reviews</a>|<a href="">Add your review</a>
+                    </div>*@
+                <div class="fw-size-choose">
+                    <p>Size</p>
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="xs-size">
+                        <label for="xs-size">32</label>
+                    </div>
+
+                </div>
+
+                <a href="@Url.Action(actionName: "OrderNow", controllerName: "ShippingCart", routeValues: new { id = Model.product_Id })" class="site-btn">ADD TO CART</a>
+                @*<a href="@Url.Action(actionName: "OrderNow", controllerName: "ShippingCart", routeValues: new { id = Model.product_Id })" class="site-btn">ADD TO CART</a>*@
+                <div id="accordion" class="accordion-area">
+                    <div class="panel">
+                        <div class="panel-header" id="headingOne">
+                            <button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">information</button>
+                        </div>
+                        <div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="panel-body">
+                                <span><i class="fa fa-arrow-alt-circle-down"></i></span>
+
+
+                                <p>@Model.product_description</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header" id="headingTwo">
+                            <button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">care details </button>
+                        </div>
+                        <div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="panel-body">
+                                <span><i class="fa fa-arrow-alt-circle-down"></i></span>
+                                <img src="~/images/cards.png" alt="">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header" id="headingThree">
+                            <button class="panel-link" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">shipping & Returns<i class="fa fa-arrow-alt-circle-down"></i></button>
+                        </div>
+                        <div id="collapse3" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                            <div class="panel-body">
+                                <h4>7 Days Returns</h4>
+                                <p>Cash on Delivery Available<br>Home Delivery <span>3 - 4 days</span></p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-sharing">
+                
+                    <a href="https://www.facebook.com/japangoodsshopinyangon/" target="_blank"><i class="fa fa-facebook-square fa-lg" style="color:#0079ff"></i></a>@*00beff*@
+                   
+            </div>
+        </div>
+    </div>
+</section>
+
+<br />
+
+
+<center>
+    <section class="related-product-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>RELATED PRODUCTS</h2>
+            </div>
+            <div class="product-slider owl-carousel">
+                @{if (@ViewBag.alsoBuy != null)
+                    {
+                        foreach (var item in @ViewBag.alsoBuy)
+                        {
+
+                            <div class="product-item" style="width:100%;">
+                                <div class="pi-pic">
+                                    <img src='@Url.Content(@item.img1)' />
+                                    <div class="pi-links">
+                                        <a href="@Url.Action(actionName:"OrderNow",controllerName: "ShippingCart",routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                        <a href="@Url.Action(actionName: "ProductDetail", controllerName: "Product", routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-info"></i><span>Go To Detail</span></a>
+                                    </div>
+                                </div>
+                                <div class="pi-text">
+                                    <div class="product-name">
+                                        <p><h5>@String.Format("{0:N0}", item.new_price) ks<span style="padding-left:20px; font-size:14px;color:red;"><del>@String.Format("{0:N0}", item.old_price) ks</del> </span></h5></p>
+                                        <p> @item.product_name</p>
+                                        <p id="model-no"> Model No: <span>@item.model_No</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                    else
+                    {
+                        <h2>There is no product Available here.</h2>
+                    }
+                }
+            </div>
+        </div>
+    </section>
+</center>

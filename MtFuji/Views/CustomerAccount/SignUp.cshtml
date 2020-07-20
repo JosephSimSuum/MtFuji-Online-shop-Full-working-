@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "SignUp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 contact-info" style="text-align: center; margin: 0 auto;">
+            <form id="Registeration" class="contact-form">
+                <h4 class="header-top">Customer Registeration</h4>
+                <div id="message1">
+                    <div class="alert alert-success">
+                        <span class="fa fa-check"></span><strong> Success Message!<br />Send Confirmation link to your Email<br />Please Check your Inbox</strong>
+                    </div>
+                </div>
+                <div id="message2">
+                    <div class="alert alert-danger">
+                        <span class="fa fa-remove"></span><strong> Error Message! Email already exist</strong>
+                    </div>
+                </div>
+                <div id="message3">
+                    <div class="alert alert-danger">
+                        <span class="fa fa-remove"></span><strong> Error Message! Password Must Be the same</strong>
+                    </div>
+                </div>
+                <div id="message4">
+                    <div class="alert alert-danger">
+                        <span class="fa fa-remove"></span><strong> Error Message! Input Invalid</strong>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" name="Name" id="user" placeholder="User Name" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="password" name="Password" id="password" placeholder="Password" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="password" name="Password2" id="password2" placeholder="Confirm Password" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" name="Email" id="email" placeholder="Email" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" name="Phone" id="phone" placeholder="Phone" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" name="Address" id="home" placeholder="eg(777 a, Kan rd, Kamayut tsp, Yangon)" />
+                    </div>
+                </div>
+                <div class="col-lg-12 card-right">
+                    <a href="#" class="site-btn" onclick="SaveForm()">Registered</a>
+                    <a href="#" class="site-btn" data-dismiss="modal" onclick="cancel()">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    $("#message1").hide();
+    $("#message2").hide();
+    $("#message3").hide();
+    $("#message4").hide();
+    function SaveForm() {
+        var name = $("#user").val();
+        var pwd = $("#password").val();
+        var pwd2 = $("#password2").val();
+        var email = $("#email").val();
+        var phone = $("#phone").val();
+        var address = $("#address").val();
+
+        if (name == "" || pwd == "" || email == "" || phone == "" || address == "") {
+            $("#message1").hide();
+            $("#message2").hide();
+            $("#message3").hide();
+            $("#message4").show();
+            $("#Registeration")[0].reset();
+            return false;
+        } if (pwd != pwd2) {
+            $("#message1").hide();
+            $("#message2").hide();
+            $("#message3").show();
+            $("#message4").hide();
+            return false;
+        }
+        var data = $("#Registeration").serialize();
+        $.ajax({
+            type: "post",
+            data: data,
+            url: "/CustomerAccount/SaveData",
+            success: function (result) {
+                if (result == "Fail") {
+                    $("#message1").hide();
+                    $("#message2").show();
+                    $("#message3").hide();
+                    $("#message4").hide();
+                } else {
+                    $("#message1").show();
+                    $("#message2").hide();
+                    $("#message3").hide();
+                    $("#message4").hide();
+                    $("#Registeration")[0].reset();
+                }
+
+
+            }
+        });
+    }
+    function cancel() {
+        $("#Registeration")[0].reset();
+    }
+
+
+</script>
