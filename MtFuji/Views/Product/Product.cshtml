@@ -68,16 +68,18 @@
                                                 <div class="tag-sale">@item.offer_title</div>
                                             }
                                             <img src='@Url.Content(@item.img1)' />
-                                            <div class="pi-links">
+                                            @*<div class="pi-links">
                                                 <a href="@Url.Action(actionName: "OrderNow", controllerName: "ShippingCart", routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                                                 <a href="@Url.Action(actionName: "ProductDetail", controllerName: "Product", routeValues: new { id = item.product_Id })" class="add-card"><i class="flaticon-info"></i><span>Go To Detail</span></a>
-                                            </div>
+                                            </div>*@
                                         </div>
                                         <div class="pi-text">
                                             <div class="product-name">
                                                 <p><h5>@String.Format("{0:N0}", item.new_price) ks<span style="padding-left:20px; font-size:14px;color:red;"><del>@String.Format("{0:N0}", item.old_price) ks</del> </span></h5></p>
                                                 <p> @item.product_name</p>
                                                 <p id="model-no"> Model No: <span>@item.model_No</span></p>
+                                                <a href="@Url.Action(actionName: "OrderNow", controllerName: "ShippingCart", routeValues: new { id = item.product_Id })" class="site-btn-cart">ADD TO CART</a>
+                                                <a href="@Url.Action(actionName: "ProductDetail", controllerName: "Product", routeValues: new { id = item.product_Id })" class="site-btn-detail">Detail</a>
                                             </div>
                                         </div>
                                     </div>
